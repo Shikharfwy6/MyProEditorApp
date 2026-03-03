@@ -3,9 +3,11 @@ package com.myproeditor.app.ui.editor
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.VideoView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
@@ -18,33 +20,27 @@ class EditorActivity : AppCompatActivity() {
 
     private lateinit var rvFiles: RecyclerView
     private lateinit var fileAdapter: FileBrowserAdapter
-    private val fileList = mutableListOf<String>()
+    private val fileList = mutableListOf<MediaFile>() // Ab naya Data Class use kar rahe hain
+    
+    // Video Play karne ke liye
+    private lateinit var videoPreview: VideoView
+    private lateinit var tvPreviewText: TextView
 
-    // Folder select karne ka Magic Engine
     private val folderPickerLauncher = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri: Uri? ->
         if (uri != null) {
-            // App ko permission dena taaki future me bhi folder read kar sake
             contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            
             val documentFile = DocumentFile.fromTreeUri(this, uri)
-            fileList.clear() // Purani list saaf karein
+            fileList.clear()
             
-            // Folder ke andar saari files check karna
             documentFile?.listFiles()?.forEach { file ->
-                // Sirf MP4 Videos aur Images ko filter karein
                 if (file.type?.startsWith("video/") == true) {
-                    fileList.add("🎬 " + (file.name ?: "Video File"))
+                    fileList.add(MediaFile("🎬 " + (file.name ?: "Video"), file.uri, true))
                 } else if (file.type?.startsWith("image/") == true) {
-                    fileList.add("🖼️ " + (file.name ?: "Image File"))
+                    fileList.add(MediaFile("🖼️ " + (file.name ?: "Image"), file.uri, false))
                 }
             }
             
-            if (fileList.isEmpty()) {
-                Toast.makeText(this, "Is folder me koi Video ya Image nahi hai!", Toast.LENGTH_LONG).show()
-            } else {
-                fileAdapter.notifyDataSetChanged() // List ko update karna
-                Toast.makeText(this, "Success! ${fileList.size} files imported.", Toast.LENGTH_SHORT).show()
-            }
+            fileAdapter.notifyDataSetChanged()
         }
     }
 
@@ -52,23 +48,36 @@ class EditorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editor)
 
-        // Plus (+) Button Logic
+        // UI Setup
+        videoPreview = findViewById(R.id.video_preview)
+        tvPreviewText = findViewById(R.id.tv_preview_text)
+        
         val btnAddElement = findViewById<TextView>(R.id.btn_add_element)
         btnAddElement?.setOnClickListener {
-            val bottomSheet = PlusMenuBottomSheet()
-            bottomSheet.show(supportFragmentManager, "PlusMenu")
+            PlusMenuBottomSheet().show(supportFragmentManager, "PlusMenu")
         }
 
-        // Folder Panel Setup
+        // Folder Panel Setup aur Click Listener
         rvFiles = findViewById(R.id.rv_files)
         rvFiles.layoutManager = LinearLayoutManager(this)
-        fileAdapter = FileBrowserAdapter(fileList)
+        
+        fileAdapter = FileBrowserAdapter(fileList) { clickedFile ->
+            // Ye code tab chalega jab list me kisi file par click hoga
+            if (clickedFile.isVideo) {
+                tvPreviewText.visibility = View.GONE // "Select Video" wala text chhupa do
+                videoPreview.setVideoURI(clickedFile.uri) // Video set karo
+                videoPreview.start() // Video play karo!
+                Toast.makeText(this, "Playing Video in Preview!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Ye ek Image hai. Abhi sirf video play hoga.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        
         rvFiles.adapter = fileAdapter
 
-        // Import Folder Button Click
         val btnOpenFolder = findViewById<Button>(R.id.btn_open_folder)
         btnOpenFolder.setOnClickListener {
-            folderPickerLauncher.launch(null) // File Manager Kholega
+            folderPickerLauncher.launch(null)
         }
     }
 }

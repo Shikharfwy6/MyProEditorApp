@@ -7,22 +7,26 @@
     android:background="@color/black_bg">
 
     <LinearLayout android:id="@+id/top_panels" android:layout_width="match_parent" android:layout_height="0dp" android:orientation="horizontal" android:weightSum="10" android:padding="5dp" app:layout_constraintHeight_percent="0.45" app:layout_constraintTop_toTopOf="parent">
+        
         <!-- Left: Effects -->
         <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.5" android:background="@color/cyan_effects" android:padding="8dp">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
-                <TextView android:text="Effects" android:textStyle="bold" android:textColor="@color/black_bg" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            </LinearLayout>
+            <TextView android:text="Effects" android:textStyle="bold" android:textColor="@color/black_bg" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         </ScrollView>
-        <!-- Middle: Preview -->
+        
+        <!-- Middle: Preview & VideoView -->
         <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="5" android:orientation="vertical" android:layout_marginStart="5dp" android:layout_marginEnd="5dp">
             <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.2" android:background="@color/grey_wheels_bg">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Colour Wheels" android:textSize="18sp" android:textStyle="bold" android:textColor="@color/black_bg"/>
             </FrameLayout>
+            
+            <!-- YAHAN VIDEO PLAY HOGA -->
             <FrameLayout android:id="@+id/gl_surface_preview" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="3" android:layout_marginTop="5dp" android:background="@color/pink_preview">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="preview" android:textColor="@color/white_text" android:textSize="22sp" android:textStyle="bold"/>
+                <VideoView android:id="@+id/video_preview" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="center"/>
+                <TextView android:id="@+id/tv_preview_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Select Video from Folder" android:textColor="@color/white_text" android:textSize="16sp" android:textStyle="bold"/>
             </FrameLayout>
         </LinearLayout>
-        <!-- Right: NEW FOLDER PANEL -->
+        
+        <!-- Right: FOLDER PANEL -->
         <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.5" android:background="@color/blue_folder" android:orientation="vertical">
             <Button android:id="@+id/btn_open_folder" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Import Folder" android:textSize="10sp" android:backgroundTint="#222222" android:textColor="#FFFFFF" android:layout_margin="4dp"/>
             <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_files" android:layout_width="match_parent" android:layout_height="match_parent" android:padding="4dp"/>
