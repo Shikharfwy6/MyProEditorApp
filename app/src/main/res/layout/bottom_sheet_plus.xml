@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#1E1E1E">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Element"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"/>
+
+    <Button android:id="@+id/btn_3d_camera" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="🎥 Add 3D Camera" android:backgroundTint="#333333" android:textColor="#FFF" android:layout_marginBottom="10dp"/>
+    <Button android:id="@+id/btn_null_object" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="🔲 Add Null Object" android:backgroundTint="#333333" android:textColor="#FFF" android:layout_marginBottom="10dp"/>
+    <Button android:id="@+id/btn_green_screen" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="🟩 Free Green Screens" android:backgroundTint="#333333" android:textColor="#FFF" android:layout_marginBottom="10dp"/>
+    <Button android:id="@+id/btn_stock_api" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="🌐 Search Stock Footage (Pexels)" android:backgroundTint="#2E7D32" android:textColor="#FFF" android:layout_marginBottom="10dp"/>
+    <Button android:id="@+id/btn_custom_plugin" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="🧩 Add Custom Plugin" android:backgroundTint="#333333" android:textColor="#FFF"/>
+
+</LinearLayout>
