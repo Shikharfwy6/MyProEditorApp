@@ -1,26 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Old Colors (Home Screen ke liye) -->
     <color name="black_bg">#000000</color>
     <color name="white_text">#FFFFFF</color>
-    
-    <!-- Home Screen Colors -->
     <color name="green_plus_1">#C0E173</color>
     <color name="green_plus_2">#8DF3A9</color>
     <color name="pink_plus">#F5A7A2</color>
     <color name="pink_bookmark">#ECA7D5</color>
-
-    <!-- Editor Screen Colors -->
-    <color name="cyan_effects">#27E3D6</color>
-    <color name="grey_wheels_bg">#748074</color>
-    <color name="pink_preview">#CE678E</color>
-    <color name="green_extra_color">#76C13A</color>
-    <color name="blue_folder">#418BA7</color>
-    
-    <!-- Layers Colors -->
-    <color name="layer_yellow">#EDD84F</color>
-    <color name="layer_red">#FA4646</color>
-    <color name="layer_green">#31FA31</color>
-    
-    <!-- Bottom Buttons -->
     <color name="purple_keyboard">#B451E0</color>
     <color name="blue_mouse">#5C7DE2</color>
+
+    <!-- New Premium Colors (Pro Editor Screen ke liye) -->
+    <color name="bg_main">#121212</color>
+    <color name="bg_panel">#1E1E1E</color>
+    <color name="bg_panel_dark">#181818</color>
+    <color name="text_main">#FFFFFF</color>
+    <color name="text_sub">#A0A0A0</color>
+    <color name="accent_green">#4CAF50</color>
+    <color name="accent_green_dark">#388E3C</color>
+    <color name="clip_red">#F44336</color>
+    <color name="button_bg">#333333</color>
+    <color name="border_color">#2A2A2A</color>
 </resources>
