@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -25,7 +26,6 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var tvPreviewText: TextView
     private lateinit var trackVideo: LinearLayout
     
-    // Mouse System
     private lateinit var mousePointer: ImageView
     private lateinit var mouseTrackpad: FrameLayout
     private var lastX = 0f
@@ -40,7 +40,6 @@ class EditorActivity : AppCompatActivity() {
             fileList.clear()
             documentFile?.listFiles()?.forEach { file ->
                 if (file.type?.startsWith("video/") == true) fileList.add(MediaFile(file.name ?: "Video", file.uri, true))
-                else if (file.type?.startsWith("image/") == true) fileList.add(MediaFile(file.name ?: "Image", file.uri, false))
             }
             fileAdapter.notifyDataSetChanged()
         }
@@ -68,6 +67,7 @@ class EditorActivity : AppCompatActivity() {
                 val clipView = TextView(this)
                 clipView.text = clickedFile.name
                 clipView.setTextColor(Color.WHITE)
+                clipView.setBackgroundResource(R.drawable.key_bg)
                 clipView.setBackgroundColor(Color.parseColor("#F44336"))
                 clipView.setPadding(15, 5, 15, 5)
                 clipView.textSize = 8f
@@ -82,7 +82,6 @@ class EditorActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.btn_open_folder).setOnClickListener { folderPickerLauncher.launch(null) }
         findViewById<ImageView>(R.id.btn_add_element).setOnClickListener { PlusMenuBottomSheet().show(supportFragmentManager, "PlusMenu") }
 
-        // MOUSE TOUCHPAD SYSTEM
         mousePointer.x = pointerX
         mousePointer.y = pointerY
         mouseTrackpad.setOnTouchListener { _, event ->
@@ -101,16 +100,7 @@ class EditorActivity : AppCompatActivity() {
             }
             true
         }
-        
-        // LEFT & RIGHT CLICK BUTTONS
-        findViewById<TextView>(R.id.btn_left_click).setOnClickListener {
-            Toast.makeText(this, "Left Click at X:${pointerX.toInt()}", Toast.LENGTH_SHORT).show()
-        }
-        findViewById<TextView>(R.id.btn_right_click).setOnClickListener {
-            Toast.makeText(this, "Right Click! Context Menu opening...", Toast.LENGTH_SHORT).show()
-        }
 
-        // BUILD PERMANENT KEYBOARD
         buildPermanentKeyboard()
     }
 
@@ -118,7 +108,9 @@ class EditorActivity : AppCompatActivity() {
         val container = findViewById<LinearLayout>(R.id.keyboard_container)
         val numpadContainer = findViewById<LinearLayout>(R.id.numpad_container)
         
-        // Main QWERTY Rows
+        // Convert 24dp to exact pixels so keys don't stretch!
+        val keyHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24f, resources.displayMetrics).toInt()
+
         val keys = listOf(
             listOf("Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"),
             listOf("~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Back"),
@@ -131,32 +123,27 @@ class EditorActivity : AppCompatActivity() {
         for (row in keys) {
             val rowLayout = LinearLayout(this)
             rowLayout.orientation = LinearLayout.HORIZONTAL
-            val rowParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f)
-            rowLayout.layoutParams = rowParams
+            rowLayout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             
             for (key in row) {
                 val btn = TextView(this)
                 btn.text = key
-                btn.textSize = 6f // Very small to fit
-                btn.setTextColor(Color.WHITE)
-                btn.setBackgroundColor(Color.parseColor("#333333"))
+                btn.textSize = 6f
+                btn.setTextColor(Color.parseColor("#A0A0A0"))
+                btn.setBackgroundResource(R.drawable.key_bg) // Smooth Border Design
                 btn.gravity = Gravity.CENTER
                 
-                val paramWeight = if (key == "Space") 5f else if (key == "Enter" || key == "Shift") 2f else 1f
-                val params = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, paramWeight)
-                params.setMargins(1, 1, 1, 1)
+                val paramWeight = if (key == "Space") 5f else if (key == "Enter" || key == "Shift" || key == "Back") 2f else 1f
+                // FIX HEIGHT APPLIED HERE
+                val params = LinearLayout.LayoutParams(0, keyHeight, paramWeight)
+                params.setMargins(2, 2, 2, 2)
                 btn.layoutParams = params
                 
-                btn.setOnClickListener {
-                    if (key == "C") Toast.makeText(this, "Cut Action!", Toast.LENGTH_SHORT).show()
-                    if (key == "Space") { if (videoPreview.isPlaying) videoPreview.pause() else videoPreview.start() }
-                }
                 rowLayout.addView(btn)
             }
             container.addView(rowLayout)
         }
 
-        // Numpad Rows
         val numKeys = listOf(
             listOf("Num", "/", "*", "-"),
             listOf("7", "8", "9", "+"),
@@ -167,21 +154,20 @@ class EditorActivity : AppCompatActivity() {
         for (row in numKeys) {
             val rowLayout = LinearLayout(this)
             rowLayout.orientation = LinearLayout.HORIZONTAL
-            val rowParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f)
-            rowLayout.layoutParams = rowParams
+            rowLayout.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             
             for (key in row) {
                 if(key == "") continue
                 val btn = TextView(this)
                 btn.text = key
                 btn.textSize = 6f
-                btn.setTextColor(Color.WHITE)
-                btn.setBackgroundColor(Color.parseColor("#333333"))
+                btn.setTextColor(Color.parseColor("#A0A0A0"))
+                btn.setBackgroundResource(R.drawable.key_bg)
                 btn.gravity = Gravity.CENTER
                 
                 val paramWeight = if (key == "0") 2f else 1f
-                val params = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, paramWeight)
-                params.setMargins(1, 1, 1, 1)
+                val params = LinearLayout.LayoutParams(0, keyHeight, paramWeight)
+                params.setMargins(2, 2, 2, 2)
                 btn.layoutParams = params
                 rowLayout.addView(btn)
             }

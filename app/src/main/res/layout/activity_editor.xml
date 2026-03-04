@@ -1,140 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_main"
-    android:orientation="vertical">
+    android:background="@color/bg_main">
 
-    <!-- 1. TOP HEADER -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="10dp" android:background="@color/bg_panel_dark">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pro Video Editor" android:textColor="@color/text_main" android:textSize="16sp" android:textStyle="bold"/>
-        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="24dp" android:text="Keyboard" app:drawableStartCompat="@drawable/ic_keyboard" app:drawableTint="@color/text_main" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center" android:paddingHorizontal="10dp" android:layout_marginEnd="10dp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="24dp" android:text="New" app:drawableStartCompat="@drawable/ic_add" app:drawableTint="@color/text_main" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center" android:paddingHorizontal="10dp"/>
-    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
-
-    <!-- 2. MAIN WORKSPACE -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="3.5" android:orientation="horizontal">
-        
-        <!-- Left: Effects -->
-        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.2" android:orientation="vertical" android:background="@color/bg_panel" android:padding="5dp">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Effects" android:textColor="@color/text_main" android:textSize="12sp" android:textStyle="bold" android:layout_marginBottom="5dp"/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="5dp">
-                <TextView android:layout_width="0dp" android:layout_height="25dp" android:layout_weight="1" android:text="All" android:background="@color/accent_green" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center"/>
-                <TextView android:layout_width="0dp" android:layout_height="25dp" android:layout_weight="1" android:text="Fav" android:background="@color/button_bg" android:textColor="@color/text_sub" android:textSize="10sp" android:gravity="center"/>
-            </LinearLayout>
-            <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
-                    <TextView android:layout_width="match_parent" android:layout_height="30dp" android:text="Blur" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center_vertical" android:paddingStart="8dp" android:layout_marginBottom="2dp"/>
-                    <TextView android:layout_width="match_parent" android:layout_height="30dp" android:text="Sharpen" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center_vertical" android:paddingStart="8dp" android:layout_marginBottom="2dp"/>
-                </LinearLayout>
-            </ScrollView>
-        </LinearLayout>
-
-        <View android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/border_color"/>
-
-        <!-- Middle: Preview & Sliders -->
-        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="5.6" android:orientation="vertical" android:background="@color/bg_main" android:padding="5dp">
-            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:background="@color/bg_panel" android:layout_marginBottom="5dp">
-                <VideoView android:id="@+id/video_preview" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="center"/>
-                <TextView android:id="@+id/tv_preview_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Drop video here" android:textColor="@color/text_sub" android:textSize="12sp"/>
-            </FrameLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center">
-                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BRIGHTNESS" android:textColor="@color/text_sub" android:textSize="7sp"/>
-                    <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:progress="50" android:progressTint="@color/accent_green" android:thumbTint="@color/accent_green" android:maxHeight="2dp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CONTRAST" android:textColor="@color/text_sub" android:textSize="7sp"/>
-                    <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:progress="50" android:progressTint="@color/accent_green" android:thumbTint="@color/accent_green" android:maxHeight="2dp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SATURATION" android:textColor="@color/text_sub" android:textSize="7sp"/>
-                    <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:progress="50" android:progressTint="@color/accent_green" android:thumbTint="@color/accent_green" android:maxHeight="2dp"/>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <View android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/border_color"/>
-
-        <!-- Right: Project Folder -->
-        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.2" android:orientation="vertical" android:background="@color/bg_panel" android:padding="5dp">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Project Folder" android:textColor="@color/text_main" android:textSize="12sp" android:textStyle="bold" android:layout_marginBottom="5dp"/>
-            <TextView android:id="@+id/btn_open_folder" android:layout_width="match_parent" android:layout_height="25dp" android:text="Root Project" app:drawableStartCompat="@drawable/ic_folder" app:drawableTint="@color/text_main" android:background="@color/accent_green_dark" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center_vertical" android:paddingStart="8dp" android:clickable="true" android:focusable="true"/>
-            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_files" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="5dp"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
-
-    <!-- 3. MIDDLE TOOLBAR -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="35dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/bg_panel_dark" android:paddingHorizontal="10dp">
-        <TextView android:layout_width="wrap_content" android:layout_height="22dp" android:text="Undo" app:drawableStartCompat="@drawable/ic_undo" app:drawableTint="@color/text_main" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center" android:paddingHorizontal="10dp" android:layout_marginEnd="5dp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="22dp" android:text="Redo" app:drawableStartCompat="@drawable/ic_redo" app:drawableTint="@color/text_main" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center" android:paddingHorizontal="10dp" android:layout_marginEnd="5dp"/>
-    </LinearLayout>
-
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
-
-    <!-- 4. TIMELINE -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.5" android:orientation="vertical" android:background="@color/bg_panel">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="30dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/bg_main" android:layout_marginBottom="2dp">
-            <TextView android:layout_width="60dp" android:layout_height="match_parent" android:text="Video 1" android:textColor="@color/text_sub" android:textSize="10sp" android:gravity="center" android:background="@color/bg_panel_dark"/>
-            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="match_parent">
-                <LinearLayout android:id="@+id/track_video" android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="5dp"/>
-            </HorizontalScrollView>
-        </LinearLayout>
-    </LinearLayout>
-
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
-
-    <!-- 5. PLAYBACK CONTROLS (With Proper Icons) -->
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="50dp" android:background="@color/bg_panel_dark" android:paddingHorizontal="15dp">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center" android:layout_centerInParent="true">
-            <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_skip_prev" android:background="@color/button_bg" android:padding="8dp" android:layout_marginEnd="5dp"/>
-            <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_rewind" android:background="@color/button_bg" android:padding="8dp" android:layout_marginEnd="5dp"/>
-            <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_keyframe" android:background="@color/button_bg" android:padding="8dp" android:layout_marginEnd="5dp"/>
-            <ImageView android:layout_width="45dp" android:layout_height="45dp" android:src="@drawable/ic_play" android:background="@color/accent_green" android:padding="10dp" android:layout_marginEnd="5dp"/>
-            <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_fast_forward" android:background="@color/button_bg" android:padding="8dp" android:layout_marginEnd="5dp"/>
-            <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_skip_next" android:background="@color/button_bg" android:padding="8dp"/>
-        </LinearLayout>
-        <ImageView android:id="@+id/btn_add_element" android:layout_width="45dp" android:layout_height="45dp" android:src="@drawable/ic_add" android:background="@drawable/circle_bg" android:backgroundTint="@color/accent_green" android:padding="10dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true"/>
-    </RelativeLayout>
-
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
-
-    <!-- 6. PERMANENT KEYBOARD & TOUCHPAD AREA (The Magic Section) -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="3.2" android:orientation="horizontal" android:background="@color/bg_main" android:padding="5dp">
-        
-        <!-- Permanent PC Keyboard Container (Will be filled by Kotlin) -->
-        <LinearLayout android:id="@+id/keyboard_container" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="7" android:orientation="vertical" android:background="@color/bg_panel_dark" android:padding="2dp"/>
-        
-        <View android:layout_width="5dp" android:layout_height="match_parent"/>
-
-        <!-- Numpad Container (Will be filled by Kotlin) -->
-        <LinearLayout android:id="@+id/numpad_container" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2" android:orientation="vertical" android:background="@color/bg_panel_dark" android:padding="2dp"/>
-
-        <View android:layout_width="5dp" android:layout_height="match_parent"/>
-
-        <!-- ASLI TOUCHPAD with L/R Clicks -->
-        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.5" android:orientation="vertical" android:background="@color/bg_panel_dark" android:padding="5dp">
-            <!-- Trackpad Area -->
-            <FrameLayout android:id="@+id/mouse_trackpad" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:background="#2A2A2A">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TOUCHPAD" android:textColor="#55FFFFFF" android:textSize="8sp" android:layout_gravity="center"/>
-            </FrameLayout>
+        <!-- 1. TOP HEADER (With Colour Wheels) -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="10dp" android:background="@color/bg_panel_dark">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pro Video Editor" android:textColor="@color/text_main" android:textSize="18sp" android:textStyle="bold"/>
+            <View android:layout_width="15dp" android:layout_height="match_parent"/>
             
-            <!-- Left & Right Click Buttons -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal" android:layout_marginTop="5dp">
-                <TextView android:id="@+id/btn_left_click" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="L" android:textColor="@color/text_main" android:background="@color/button_bg" android:gravity="center" android:layout_marginEnd="2dp" android:clickable="true" android:focusable="true"/>
-                <TextView android:id="@+id/btn_right_click" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="R" android:textColor="@color/text_main" android:background="@color/button_bg" android:gravity="center" android:layout_marginStart="2dp" android:clickable="true" android:focusable="true"/>
+            <!-- Colour Wheels -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎨 Colour Grading" android:textColor="@color/text_sub" android:textSize="10sp" android:layout_marginEnd="5dp"/>
+            <View android:layout_width="18dp" android:layout_height="18dp" android:background="@drawable/color_wheel" android:layout_marginEnd="5dp"/>
+            <View android:layout_width="18dp" android:layout_height="18dp" android:background="@drawable/color_wheel" android:layout_marginEnd="5dp"/>
+            <View android:layout_width="18dp" android:layout_height="18dp" android:background="@drawable/color_wheel"/>
+            
+            <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="24dp" android:text="Keyboard" app:drawableStartCompat="@drawable/ic_keyboard" app:drawableTint="@color/text_main" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center" android:paddingHorizontal="8dp" android:layout_marginEnd="8dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="24dp" android:text="New" app:drawableStartCompat="@drawable/ic_add" app:drawableTint="@color/text_main" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center" android:paddingHorizontal="8dp"/>
+        </LinearLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
+
+        <!-- 2. MAIN WORKSPACE -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="3.2" android:orientation="horizontal">
+            <!-- Left: Effects -->
+            <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.2" android:orientation="vertical" android:background="@color/bg_panel" android:padding="5dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Effects" android:textColor="@color/text_main" android:textSize="12sp" android:textStyle="bold" android:layout_marginBottom="5dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="5dp">
+                    <TextView android:layout_width="0dp" android:layout_height="25dp" android:layout_weight="1" android:text="All" android:background="@color/accent_green" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center"/>
+                    <TextView android:layout_width="0dp" android:layout_height="25dp" android:layout_weight="1" android:text="Fav" android:background="@color/button_bg" android:textColor="@color/text_sub" android:textSize="10sp" android:gravity="center"/>
+                </LinearLayout>
+                <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                        <TextView android:layout_width="match_parent" android:layout_height="30dp" android:text="Blur" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center_vertical" android:paddingStart="8dp" android:layout_marginBottom="2dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="30dp" android:text="Sharpen" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center_vertical" android:paddingStart="8dp" android:layout_marginBottom="2dp"/>
+                    </LinearLayout>
+                </ScrollView>
+            </LinearLayout>
+
+            <View android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/border_color"/>
+
+            <!-- Middle: Preview -->
+            <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="5.6" android:orientation="vertical" android:background="@color/bg_main" android:padding="5dp">
+                <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:background="@color/bg_panel" android:layout_marginBottom="5dp">
+                    <VideoView android:id="@+id/video_preview" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="center"/>
+                    <TextView android:id="@+id/tv_preview_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Drop video here" android:textColor="@color/text_sub" android:textSize="12sp"/>
+                </FrameLayout>
+                <!-- Sliders -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center">
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BRIGHTNESS" android:textColor="@color/text_sub" android:textSize="7sp"/>
+                        <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:progress="50" android:progressTint="@color/accent_green" android:thumbTint="@color/accent_green"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CONTRAST" android:textColor="@color/text_sub" android:textSize="7sp"/>
+                        <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:progress="50" android:progressTint="@color/accent_green" android:thumbTint="@color/accent_green"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/border_color"/>
+
+            <!-- Right: Folder -->
+            <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.2" android:orientation="vertical" android:background="@color/bg_panel" android:padding="5dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Project Folder" android:textColor="@color/text_main" android:textSize="12sp" android:textStyle="bold" android:layout_marginBottom="5dp"/>
+                <TextView android:id="@+id/btn_open_folder" android:layout_width="match_parent" android:layout_height="25dp" android:text="Root Project" app:drawableStartCompat="@drawable/ic_folder" app:drawableTint="@color/text_main" android:background="@color/accent_green_dark" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center_vertical" android:paddingStart="8dp" android:clickable="true" android:focusable="true"/>
+                <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_files" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="5dp"/>
             </LinearLayout>
         </LinearLayout>
 
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
+
+        <!-- 3. TOOLBAR -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="35dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/bg_panel_dark" android:paddingHorizontal="10dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="22dp" android:text="Undo" app:drawableStartCompat="@drawable/ic_undo" app:drawableTint="@color/text_main" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center" android:paddingHorizontal="10dp" android:layout_marginEnd="5dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="22dp" android:text="Redo" app:drawableStartCompat="@drawable/ic_redo" app:drawableTint="@color/text_main" android:background="@color/button_bg" android:textColor="@color/text_main" android:textSize="10sp" android:gravity="center" android:paddingHorizontal="10dp"/>
+        </LinearLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
+
+        <!-- 4. TIMELINE -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.2" android:orientation="vertical" android:background="@color/bg_panel">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="30dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/bg_main">
+                <TextView android:layout_width="60dp" android:layout_height="match_parent" android:text="Video 1" android:textColor="@color/text_sub" android:textSize="10sp" android:gravity="center" android:background="@color/bg_panel_dark"/>
+                <HorizontalScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+                    <LinearLayout android:id="@+id/track_video" android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="5dp"/>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
+
+        <!-- 5. PLAYBACK CONTROLS -->
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="50dp" android:background="@color/bg_panel_dark" android:paddingHorizontal="15dp">
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center" android:layout_centerInParent="true">
+                <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_skip_prev" android:background="@drawable/key_bg" android:padding="8dp" android:layout_marginEnd="5dp"/>
+                <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_rewind" android:background="@drawable/key_bg" android:padding="8dp" android:layout_marginEnd="5dp"/>
+                <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_keyframe" android:background="@drawable/key_bg" android:padding="8dp" android:layout_marginEnd="5dp"/>
+                <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/ic_play" android:background="@drawable/circle_bg" android:padding="10dp" android:layout_marginEnd="5dp"/>
+                <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_fast_forward" android:background="@drawable/key_bg" android:padding="8dp" android:layout_marginEnd="5dp"/>
+                <ImageView android:layout_width="35dp" android:layout_height="35dp" android:src="@drawable/ic_skip_next" android:background="@drawable/key_bg" android:padding="8dp"/>
+            </LinearLayout>
+            <ImageView android:id="@+id/btn_add_element" android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/ic_add" android:background="@drawable/circle_bg" android:padding="10dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
+
+        <!-- 6. PERMANENT KEYBOARD & TOUCHPAD -->
+        <!-- Yahan height wrap_content kiya hai taaki lamba na ho -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:background="@color/bg_panel_dark" android:padding="8dp">
+            
+            <LinearLayout android:id="@+id/keyboard_container" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="7.5" android:orientation="vertical"/>
+            <View android:layout_width="5dp" android:layout_height="match_parent"/>
+            <LinearLayout android:id="@+id/numpad_container" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:orientation="vertical"/>
+            <View android:layout_width="5dp" android:layout_height="match_parent"/>
+
+            <!-- Touchpad Area -->
+            <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.5" android:orientation="vertical" android:background="@drawable/trackpad_bg" android:padding="5dp">
+                <FrameLayout android:id="@+id/mouse_trackpad" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+                    <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@drawable/ic_mouse" android:layout_gravity="center" android:alpha="0.7"/>
+                </FrameLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="35dp" android:orientation="horizontal" android:layout_marginTop="5dp">
+                    <TextView android:id="@+id/btn_left_click" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="L" android:textColor="@color/text_sub" android:background="@drawable/key_bg" android:gravity="center" android:layout_marginEnd="2dp" android:clickable="true" android:focusable="true"/>
+                    <TextView android:id="@+id/btn_right_click" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="R" android:textColor="@color/text_sub" android:background="@drawable/key_bg" android:gravity="center" android:layout_marginStart="2dp" android:clickable="true" android:focusable="true"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- FLOATING PC MOUSE POINTER -->
     <ImageView android:id="@+id/mouse_pointer" android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_cursor" android:elevation="100dp" android:layout_gravity="center" android:visibility="visible"/>
-
-</LinearLayout>
+</RelativeLayout>
