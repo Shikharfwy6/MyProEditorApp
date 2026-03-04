@@ -1,78 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@color/bg_main"
+    android:orientation="vertical">
 
-    <!-- TOP PANELS -->
-    <LinearLayout android:id="@+id/top_panels" android:layout_width="match_parent" android:layout_height="0dp" android:orientation="horizontal" android:weightSum="10" android:padding="5dp" app:layout_constraintHeight_percent="0.45" app:layout_constraintTop_toTopOf="parent">
-        <!-- Left: Effects -->
-        <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.5" android:background="#27E3D6" android:padding="8dp">
-            <TextView android:text="Effects\n► colour\n► transform" android:textStyle="bold" android:textColor="#000" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-        </ScrollView>
-        <!-- Middle: Preview -->
-        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="5" android:orientation="vertical" android:layout_marginStart="5dp" android:layout_marginEnd="5dp">
-            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.2" android:background="#748074">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Colour Wheels" android:textStyle="bold" android:textColor="#000"/>
-            </FrameLayout>
-            <FrameLayout android:id="@+id/gl_surface_preview" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="3" android:layout_marginTop="5dp" android:background="#CE678E">
+    <!-- 1. TOP HEADER -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="50dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="15dp" android:background="@color/bg_panel_dark">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pro Video Editor" android:textColor="@color/text_main" android:textSize="22sp" android:textStyle="bold"/>
+        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
+        
+        <!-- YAHAN EMOJI HATA KAR ICON LAGAYA -->
+        <Button android:layout_width="wrap_content" android:layout_height="40dp" android:text="Keyboard" app:icon="@drawable/ic_keyboard" app:iconTint="@color/text_main" android:backgroundTint="@color/button_bg" android:textColor="@color/text_main" android:textSize="12sp" android:layout_marginEnd="10dp"/>
+        <Button android:layout_width="wrap_content" android:layout_height="40dp" android:text="New" app:icon="@drawable/ic_add" app:iconTint="@color/text_main" android:backgroundTint="@color/button_bg" android:textColor="@color/text_main" android:textSize="12sp"/>
+    </LinearLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
+
+    <!-- 2. MAIN WORKSPACE (3 Columns) -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="4" android:orientation="horizontal">
+        
+        <!-- Left: Effects Panel -->
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.5" android:orientation="vertical" android:background="@color/bg_panel" android:padding="8dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Effects" android:textColor="@color/text_main" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <Button android:layout_width="0dp" android:layout_height="35dp" android:layout_weight="1" android:text="All" android:backgroundTint="@color/accent_green" android:textColor="@color/text_main" android:textSize="12sp"/>
+                <Button android:layout_width="0dp" android:layout_height="35dp" android:layout_weight="1" android:text="Fav" android:backgroundTint="@color/button_bg" android:textColor="@color/text_sub" android:textSize="12sp"/>
+            </LinearLayout>
+            <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="8dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                    <Button android:layout_width="match_parent" android:layout_height="40dp" android:text="Blur" android:backgroundTint="@color/button_bg" android:textColor="@color/text_main" android:gravity="left|center_vertical" android:layout_marginBottom="4dp"/>
+                    <Button android:layout_width="match_parent" android:layout_height="40dp" android:text="Sharpen" android:backgroundTint="@color/button_bg" android:textColor="@color/text_main" android:gravity="left|center_vertical" android:layout_marginBottom="4dp"/>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <View android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/border_color"/>
+
+        <!-- Middle: Preview & Sliders -->
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="5.5" android:orientation="vertical" android:background="@color/bg_main" android:padding="10dp">
+            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:background="@color/bg_panel" android:layout_marginBottom="10dp">
                 <VideoView android:id="@+id/video_preview" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="center"/>
-                <TextView android:id="@+id/tv_preview_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Select Video from Right" android:textColor="#FFF" android:textStyle="bold"/>
+                <TextView android:id="@+id/tv_preview_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Drop video here" android:textColor="@color/text_sub" android:textSize="16sp"/>
             </FrameLayout>
+            <!-- Sliders -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center">
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BRIGHTNESS" android:textColor="@color/text_sub" android:textSize="8sp"/>
+                    <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:progress="50" android:progressTint="@color/accent_green" android:thumbTint="@color/accent_green"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CONTRAST" android:textColor="@color/text_sub" android:textSize="8sp"/>
+                    <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:progress="50" android:progressTint="@color/accent_green" android:thumbTint="@color/accent_green"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-        <!-- Right: Folder -->
-        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.5" android:background="#418BA7" android:orientation="vertical">
-            <Button android:id="@+id/btn_open_folder" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Import Folder" android:textSize="10sp" android:backgroundTint="#222" android:textColor="#FFF" android:layout_margin="4dp"/>
-            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_files" android:layout_width="match_parent" android:layout_height="match_parent" android:padding="4dp"/>
+
+        <View android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/border_color"/>
+
+        <!-- Right: Project Folder -->
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.5" android:orientation="vertical" android:background="@color/bg_panel" android:padding="8dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Project Folder" android:textColor="@color/text_main" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+            
+            <!-- YAHAN FOLDER ICON LAGAYA -->
+            <Button android:id="@+id/btn_open_folder" android:layout_width="match_parent" android:layout_height="40dp" android:text="Root Project" app:icon="@drawable/ic_folder" app:iconTint="@color/text_main" android:backgroundTint="@color/accent_green_dark" android:textColor="@color/text_main" android:textSize="12sp" android:gravity="left|center_vertical"/>
+            
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_files" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="5dp"/>
         </LinearLayout>
     </LinearLayout>
 
-    <View android:id="@+id/divider1" android:layout_width="match_parent" android:layout_height="2dp" android:background="#FFF" android:layout_marginTop="5dp" app:layout_constraintTop_toBottomOf="@id/top_panels" />
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
 
-    <!-- DYNAMIC TIMELINE LAYERS -->
-    <LinearLayout android:id="@+id/timeline_panel" android:layout_width="match_parent" android:layout_height="0dp" android:orientation="vertical" android:padding="10dp" app:layout_constraintHeight_percent="0.25" app:layout_constraintTop_toBottomOf="@id/divider1">
+    <!-- 3. MIDDLE TOOLBAR -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="50dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/bg_panel_dark" android:paddingHorizontal="10dp">
+        <!-- UNDO / REDO / PLUS ICONS -->
+        <Button android:layout_width="wrap_content" android:layout_height="40dp" android:text="Undo" app:icon="@drawable/ic_undo" app:iconTint="@color/text_main" android:backgroundTint="@color/button_bg" android:textColor="@color/text_main" android:textSize="12sp" android:layout_marginEnd="5dp"/>
+        <Button android:layout_width="wrap_content" android:layout_height="40dp" android:text="Redo" app:icon="@drawable/ic_redo" app:iconTint="@color/text_main" android:backgroundTint="@color/button_bg" android:textColor="@color/text_main" android:textSize="12sp" android:layout_marginEnd="15dp"/>
         
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Video Track 1" android:textColor="#FFF" android:textSize="10sp"/>
-        
-        <!-- YAHAN VIDEOS EK KE BAAD EK ADD HONGE -->
-        <HorizontalScrollView android:layout_width="match_parent" android:layout_height="40dp" android:background="#333333" android:layout_marginBottom="10dp">
-            <LinearLayout android:id="@+id/track_video" android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="2dp"/>
-        </HorizontalScrollView>
-
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Audio Track 1" android:textColor="#FFF" android:textSize="10sp"/>
-        
-        <HorizontalScrollView android:layout_width="match_parent" android:layout_height="30dp" android:background="#222222">
-            <LinearLayout android:id="@+id/track_audio" android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="2dp"/>
-        </HorizontalScrollView>
-
+        <Button android:layout_width="wrap_content" android:layout_height="40dp" android:text="Video" app:icon="@drawable/ic_add" app:iconTint="@color/text_main" android:backgroundTint="@color/button_bg" android:textColor="@color/text_main" android:textSize="12sp" android:layout_marginEnd="5dp"/>
+        <Button android:layout_width="wrap_content" android:layout_height="40dp" android:text="Effect" app:icon="@drawable/ic_add" app:iconTint="@color/text_main" android:backgroundTint="@color/button_bg" android:textColor="@color/text_main" android:textSize="12sp" android:layout_marginEnd="5dp"/>
     </LinearLayout>
 
-    <View android:id="@+id/divider2" android:layout_width="match_parent" android:layout_height="2dp" android:background="#FFF" app:layout_constraintTop_toBottomOf="@id/timeline_panel" />
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
 
-    <!-- BOTTOM CONTROLS -->
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="0dp" android:padding="10dp" app:layout_constraintTop_toBottomOf="@id/divider2" app:layout_constraintBottom_toBottomOf="parent">
-        
-        <TextView android:id="@+id/btn_add_element" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+" android:textColor="#FFF" android:textSize="50sp" android:textStyle="bold" app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:orientation="horizontal" android:gravity="center" android:weightSum="2" app:layout_constraintBottom_toBottomOf="parent">
-            <androidx.cardview.widget.CardView android:id="@+id/btn_keyboard" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="10dp" app:cardBackgroundColor="#B451E0" app:cardCornerRadius="10dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Keyboard (108 Keys)" android:textColor="#FFF" android:textSize="14sp" android:textStyle="bold" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView android:id="@+id/btn_mouse" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="10dp" app:cardBackgroundColor="#5C7DE2" app:cardCornerRadius="10dp">
-                <TextView android:id="@+id/tv_mouse_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Enable Mouse" android:textColor="#FFF" android:textSize="14sp" android:textStyle="bold" />
-            </androidx.cardview.widget.CardView>
+    <!-- 4. TIMELINE -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.5" android:orientation="vertical" android:background="@color/bg_panel">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="@color/bg_main" android:layout_marginBottom="2dp">
+            <TextView android:layout_width="80dp" android:layout_height="match_parent" android:text="Video 1" android:textColor="@color/text_sub" android:textSize="12sp" android:gravity="center" android:background="@color/bg_panel_dark"/>
+            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+                <LinearLayout android:id="@+id/track_video" android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="5dp"/>
+            </HorizontalScrollView>
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
-    <!-- HIDDEN MOUSE TRACKPAD OVERLAY -->
-    <FrameLayout android:id="@+id/mouse_trackpad" android:layout_width="match_parent" android:layout_height="300dp" android:background="#88000000" app:layout_constraintBottom_toBottomOf="parent" android:visibility="gone">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TRACKPAD AREA\nDrag finger here. Tap to Click." android:textColor="#88FFFFFF" android:layout_gravity="center" android:gravity="center" android:textSize="20sp"/>
-    </FrameLayout>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color"/>
 
-    <!-- FLOATING MOUSE POINTER (Initially Hidden) -->
-    <TextView android:id="@+id/mouse_pointer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="↖️" android:textSize="30sp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintLeft_toLeftOf="parent" android:elevation="100dp"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 5. PLAYBACK CONTROLS -->
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="60dp" android:background="@color/bg_panel_dark" android:paddingHorizontal="20dp">
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center" android:layout_centerInParent="true">
+            <!-- PLAY ICON -->
+            <com.google.android.material.button.MaterialButton android:layout_width="50dp" android:layout_height="50dp" app:icon="@drawable/ic_play" app:iconSize="30dp" app:iconGravity="textStart" app:iconPadding="0dp" app:iconTint="@color/text_main" android:backgroundTint="@color/accent_green" android:layout_marginEnd="10dp"/>
+        </LinearLayout>
+        <!-- Big Plus Button -->
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_add_element" android:layout_width="50dp" android:layout_height="50dp" app:icon="@drawable/ic_add" app:iconSize="30dp" app:iconGravity="textStart" app:iconPadding="0dp" app:iconTint="@color/text_main" android:backgroundTint="@color/accent_green" android:layout_alignParentEnd="true" android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</LinearLayout>
