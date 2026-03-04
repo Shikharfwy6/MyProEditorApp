@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.documentfile.provider.DocumentFile
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +27,7 @@ class EditorActivity : AppCompatActivity() {
     
     private lateinit var videoPreview: VideoView
     private lateinit var tvPreviewText: TextView
-    private lateinit var trackVideo: LinearLayout // Dynamic Timeline
+    private lateinit var trackVideo: LinearLayout
     
     // Mouse Variables
     private lateinit var mousePointer: TextView
@@ -71,14 +70,14 @@ class EditorActivity : AppCompatActivity() {
                 videoPreview.setVideoURI(clickedFile.uri)
                 videoPreview.start()
                 
-                // Naya Video Block Banakar Timeline me aage (Right side) Add karna
+                // Add clip to timeline
                 val clipView = TextView(this)
                 clipView.text = clickedFile.name
                 clipView.setTextColor(Color.WHITE)
-                clipView.setBackgroundColor(Color.parseColor("#FA4646")) // Red Color
+                clipView.setBackgroundColor(Color.parseColor("#F44336")) // Red color
                 clipView.setPadding(20, 10, 20, 10)
+                clipView.textSize = 10f
                 
-                // Thoda margin dena clips ke beech me
                 val params = LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.MATCH_PARENT)
                 params.setMargins(0, 0, 5, 0)
                 clipView.layoutParams = params
@@ -87,28 +86,28 @@ class EditorActivity : AppCompatActivity() {
                     Toast.makeText(this, "Layer Selected: ${clickedFile.name}", Toast.LENGTH_SHORT).show()
                 }
                 
-                trackVideo.addView(clipView) // Ek ke aage ek add hoga
+                trackVideo.addView(clipView)
             }
         }
         rvFiles.adapter = fileAdapter
 
-        findViewById<Button>(R.id.btn_open_folder).setOnClickListener { folderPickerLauncher.launch(null) }
+        // UI Buttons ko TextView me convert kiya
+        findViewById<TextView>(R.id.btn_open_folder).setOnClickListener { folderPickerLauncher.launch(null) }
         findViewById<TextView>(R.id.btn_add_element).setOnClickListener { PlusMenuBottomSheet().show(supportFragmentManager, "PlusMenu") }
 
         // 2. VIRTUAL MOUSE TRACKPAD SYSTEM
-        val btnMouse = findViewById<CardView>(R.id.btn_mouse)
-        val tvMouseBtn = findViewById<TextView>(R.id.tv_mouse_btn)
+        val btnMouse = findViewById<TextView>(R.id.btn_mouse)
         
         btnMouse.setOnClickListener {
             isMouseEnabled = !isMouseEnabled
             if (isMouseEnabled) {
                 mouseTrackpad.visibility = View.VISIBLE
                 mousePointer.visibility = View.VISIBLE
-                tvMouseBtn.text = "Disable Mouse"
+                btnMouse.text = "🖱 Disable Mouse"
             } else {
                 mouseTrackpad.visibility = View.GONE
                 mousePointer.visibility = View.GONE
-                tvMouseBtn.text = "Enable Mouse"
+                btnMouse.text = "🖱 Enable Mouse"
             }
         }
 
@@ -121,25 +120,21 @@ class EditorActivity : AppCompatActivity() {
                 MotionEvent.ACTION_MOVE -> {
                     val dx = event.x - lastX
                     val dy = event.y - lastY
-                    mousePointer.x += dx * 1.5f // Pointer Speed
+                    mousePointer.x += dx * 1.5f
                     mousePointer.y += dy * 1.5f
                     lastX = event.x
                     lastY = event.y
-                }
-                MotionEvent.ACTION_UP -> {
-                    // Click simulation kar sakte hain future me
                 }
             }
             true
         }
 
         // 3. 108-KEY VIRTUAL KEYBOARD SYSTEM
-        findViewById<CardView>(R.id.btn_keyboard).setOnClickListener {
+        findViewById<TextView>(R.id.btn_keyboard).setOnClickListener {
             showVirtualKeyboard()
         }
     }
 
-    // Yahan hum code ke through Pura Keyboard bana rahe hain
     private fun showVirtualKeyboard() {
         val dialog = BottomSheetDialog(this)
         val scrollView = ScrollView(this)
@@ -148,7 +143,6 @@ class EditorActivity : AppCompatActivity() {
         mainLayout.setPadding(10, 10, 10, 10)
         mainLayout.setBackgroundColor(Color.parseColor("#121212"))
 
-        // PC Keyboard Rows
         val keys = listOf(
             listOf("Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"),
             listOf("~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace"),
@@ -176,7 +170,6 @@ class EditorActivity : AppCompatActivity() {
                 btn.textSize = 10f
                 btn.setPadding(5,5,5,5)
                 
-                // Keyboard Shortcut Logic
                 btn.setOnClickListener {
                     when (key) {
                         "C (Cut)" -> Toast.makeText(this, "✂️ CUT Applied at Timeline!", Toast.LENGTH_LONG).show()
@@ -194,7 +187,6 @@ class EditorActivity : AppCompatActivity() {
             mainLayout.addView(rowLayout)
         }
 
-        // Add Horizontal Scroll inside Vertical Scroll to fit 108 keys
         val hScroll = HorizontalScrollView(this)
         hScroll.addView(mainLayout)
         scrollView.addView(hScroll)
