@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.myproeditor.app.R
-import com.myproeditor.app.ui.bottomsheet.PlusMenuBottomSheet
 
 class EditorActivity : AppCompatActivity() {
 
@@ -29,10 +28,9 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var tvPreviewText: TextView
     private lateinit var trackVideo: LinearLayout
     
-    // Mouse Variables
-    private lateinit var mousePointer: TextView
+    // NAYA MOUSE POINTER (ImageView)
+    private lateinit var mousePointer: ImageView
     private lateinit var mouseTrackpad: FrameLayout
-    private var isMouseEnabled = false
     private var lastX = 0f
     private var lastY = 0f
 
@@ -42,8 +40,11 @@ class EditorActivity : AppCompatActivity() {
             val documentFile = DocumentFile.fromTreeUri(this, uri)
             fileList.clear()
             documentFile?.listFiles()?.forEach { file ->
+                // NAAM SE EMOJI HATA DIYE HAIN
                 if (file.type?.startsWith("video/") == true) {
-                    fileList.add(MediaFile("🎬 " + (file.name ?: "Video"), file.uri, true))
+                    fileList.add(MediaFile(file.name ?: "Video", file.uri, true))
+                } else if (file.type?.startsWith("image/") == true) {
+                    fileList.add(MediaFile(file.name ?: "Image", file.uri, false))
                 }
             }
             fileAdapter.notifyDataSetChanged()
@@ -61,7 +62,6 @@ class EditorActivity : AppCompatActivity() {
         mousePointer = findViewById(R.id.mouse_pointer)
         mouseTrackpad = findViewById(R.id.mouse_trackpad)
 
-        // 1. DYNAMIC TIMELINE SYSTEM
         rvFiles = findViewById(R.id.rv_files)
         rvFiles.layoutManager = LinearLayoutManager(this)
         fileAdapter = FileBrowserAdapter(fileList) { clickedFile ->
@@ -70,11 +70,10 @@ class EditorActivity : AppCompatActivity() {
                 videoPreview.setVideoURI(clickedFile.uri)
                 videoPreview.start()
                 
-                // Add clip to timeline
                 val clipView = TextView(this)
                 clipView.text = clickedFile.name
                 clipView.setTextColor(Color.WHITE)
-                clipView.setBackgroundColor(Color.parseColor("#F44336")) // Red color
+                clipView.setBackgroundColor(Color.parseColor("#F44336"))
                 clipView.setPadding(20, 10, 20, 10)
                 clipView.textSize = 10f
                 
@@ -82,35 +81,14 @@ class EditorActivity : AppCompatActivity() {
                 params.setMargins(0, 0, 5, 0)
                 clipView.layoutParams = params
                 
-                clipView.setOnClickListener {
-                    Toast.makeText(this, "Layer Selected: ${clickedFile.name}", Toast.LENGTH_SHORT).show()
-                }
-                
                 trackVideo.addView(clipView)
             }
         }
         rvFiles.adapter = fileAdapter
 
-        // UI Buttons ko TextView me convert kiya
         findViewById<TextView>(R.id.btn_open_folder).setOnClickListener { folderPickerLauncher.launch(null) }
-        findViewById<TextView>(R.id.btn_add_element).setOnClickListener { PlusMenuBottomSheet().show(supportFragmentManager, "PlusMenu") }
 
-        // 2. VIRTUAL MOUSE TRACKPAD SYSTEM
-        val btnMouse = findViewById<TextView>(R.id.btn_mouse)
-        
-        btnMouse.setOnClickListener {
-            isMouseEnabled = !isMouseEnabled
-            if (isMouseEnabled) {
-                mouseTrackpad.visibility = View.VISIBLE
-                mousePointer.visibility = View.VISIBLE
-                btnMouse.text = "🖱 Disable Mouse"
-            } else {
-                mouseTrackpad.visibility = View.GONE
-                mousePointer.visibility = View.GONE
-                btnMouse.text = "🖱 Enable Mouse"
-            }
-        }
-
+        // PERMANENT TRACKPAD LOGIC (Ab isko enable nahi karna padega, hamesha chalega)
         mouseTrackpad.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -129,10 +107,7 @@ class EditorActivity : AppCompatActivity() {
             true
         }
 
-        // 3. 108-KEY VIRTUAL KEYBOARD SYSTEM
-        findViewById<TextView>(R.id.btn_keyboard).setOnClickListener {
-            showVirtualKeyboard()
-        }
+        findViewById<TextView>(R.id.btn_keyboard).setOnClickListener { showVirtualKeyboard() }
     }
 
     private fun showVirtualKeyboard() {
@@ -152,13 +127,6 @@ class EditorActivity : AppCompatActivity() {
             listOf("Ctrl", "Win", "Alt", "Space (Play/Pause)", "Alt", "Ctrl", "◄", "▼", "▲", "►")
         )
 
-        val title = TextView(this)
-        title.text = "108-Key Virtual Keyboard"
-        title.setTextColor(Color.WHITE)
-        title.textSize = 18f
-        title.setPadding(0,0,0,20)
-        mainLayout.addView(title)
-
         for (row in keys) {
             val rowLayout = LinearLayout(this)
             rowLayout.orientation = LinearLayout.HORIZONTAL
@@ -172,11 +140,11 @@ class EditorActivity : AppCompatActivity() {
                 
                 btn.setOnClickListener {
                     when (key) {
-                        "C (Cut)" -> Toast.makeText(this, "✂️ CUT Applied at Timeline!", Toast.LENGTH_LONG).show()
+                        "C (Cut)" -> Toast.makeText(this, "Cut Applied at Timeline!", Toast.LENGTH_LONG).show() // Emoji Hata Diya
                         "Space (Play/Pause)" -> {
                             if (videoPreview.isPlaying) videoPreview.pause() else videoPreview.start()
                         }
-                        else -> Toast.makeText(this, "Key Pressed: $key", Toast.LENGTH_SHORT).show()
+                        else -> Toast.makeText(this, "Key: $key", Toast.LENGTH_SHORT).show()
                     }
                 }
                 
