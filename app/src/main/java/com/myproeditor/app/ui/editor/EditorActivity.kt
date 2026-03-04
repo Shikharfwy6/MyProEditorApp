@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -15,24 +14,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.myproeditor.app.R
+import com.myproeditor.app.ui.bottomsheet.PlusMenuBottomSheet
 
 class EditorActivity : AppCompatActivity() {
 
-    private lateinit var rvFiles: RecyclerView
+    private lateinit var fileList: MutableList<MediaFile>
     private lateinit var fileAdapter: FileBrowserAdapter
-    private val fileList = mutableListOf<MediaFile>()
-    
     private lateinit var videoPreview: VideoView
     private lateinit var tvPreviewText: TextView
     private lateinit var trackVideo: LinearLayout
     
-    // NAYA MOUSE POINTER (ImageView)
+    // Mouse System
     private lateinit var mousePointer: ImageView
     private lateinit var mouseTrackpad: FrameLayout
     private var lastX = 0f
     private var lastY = 0f
+    private var pointerX = 500f
+    private var pointerY = 500f
 
     private val folderPickerLauncher = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri: Uri? ->
         if (uri != null) {
@@ -40,12 +39,8 @@ class EditorActivity : AppCompatActivity() {
             val documentFile = DocumentFile.fromTreeUri(this, uri)
             fileList.clear()
             documentFile?.listFiles()?.forEach { file ->
-                // NAAM SE EMOJI HATA DIYE HAIN
-                if (file.type?.startsWith("video/") == true) {
-                    fileList.add(MediaFile(file.name ?: "Video", file.uri, true))
-                } else if (file.type?.startsWith("image/") == true) {
-                    fileList.add(MediaFile(file.name ?: "Image", file.uri, false))
-                }
+                if (file.type?.startsWith("video/") == true) fileList.add(MediaFile(file.name ?: "Video", file.uri, true))
+                else if (file.type?.startsWith("image/") == true) fileList.add(MediaFile(file.name ?: "Image", file.uri, false))
             }
             fileAdapter.notifyDataSetChanged()
         }
@@ -55,14 +50,14 @@ class EditorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editor)
 
+        fileList = mutableListOf()
         videoPreview = findViewById(R.id.video_preview)
         tvPreviewText = findViewById(R.id.tv_preview_text)
         trackVideo = findViewById(R.id.track_video)
-        
         mousePointer = findViewById(R.id.mouse_pointer)
         mouseTrackpad = findViewById(R.id.mouse_trackpad)
 
-        rvFiles = findViewById(R.id.rv_files)
+        val rvFiles = findViewById<RecyclerView>(R.id.rv_files)
         rvFiles.layoutManager = LinearLayoutManager(this)
         fileAdapter = FileBrowserAdapter(fileList) { clickedFile ->
             if (clickedFile.isVideo) {
@@ -74,92 +69,123 @@ class EditorActivity : AppCompatActivity() {
                 clipView.text = clickedFile.name
                 clipView.setTextColor(Color.WHITE)
                 clipView.setBackgroundColor(Color.parseColor("#F44336"))
-                clipView.setPadding(20, 10, 20, 10)
-                clipView.textSize = 10f
-                
-                val params = LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.MATCH_PARENT)
+                clipView.setPadding(15, 5, 15, 5)
+                clipView.textSize = 8f
+                val params = LinearLayout.LayoutParams(300, ViewGroup.LayoutParams.MATCH_PARENT)
                 params.setMargins(0, 0, 5, 0)
                 clipView.layoutParams = params
-                
                 trackVideo.addView(clipView)
             }
         }
         rvFiles.adapter = fileAdapter
 
         findViewById<TextView>(R.id.btn_open_folder).setOnClickListener { folderPickerLauncher.launch(null) }
+        findViewById<ImageView>(R.id.btn_add_element).setOnClickListener { PlusMenuBottomSheet().show(supportFragmentManager, "PlusMenu") }
 
-        // PERMANENT TRACKPAD LOGIC (Ab isko enable nahi karna padega, hamesha chalega)
+        // MOUSE TOUCHPAD SYSTEM
+        mousePointer.x = pointerX
+        mousePointer.y = pointerY
         mouseTrackpad.setOnTouchListener { _, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastX = event.x
-                    lastY = event.y
-                }
+                MotionEvent.ACTION_DOWN -> { lastX = event.x; lastY = event.y }
                 MotionEvent.ACTION_MOVE -> {
                     val dx = event.x - lastX
                     val dy = event.y - lastY
-                    mousePointer.x += dx * 1.5f
-                    mousePointer.y += dy * 1.5f
+                    pointerX += dx * 1.5f
+                    pointerY += dy * 1.5f
+                    mousePointer.x = pointerX
+                    mousePointer.y = pointerY
                     lastX = event.x
                     lastY = event.y
                 }
             }
             true
         }
+        
+        // LEFT & RIGHT CLICK BUTTONS
+        findViewById<TextView>(R.id.btn_left_click).setOnClickListener {
+            Toast.makeText(this, "Left Click at X:${pointerX.toInt()}", Toast.LENGTH_SHORT).show()
+        }
+        findViewById<TextView>(R.id.btn_right_click).setOnClickListener {
+            Toast.makeText(this, "Right Click! Context Menu opening...", Toast.LENGTH_SHORT).show()
+        }
 
-        findViewById<TextView>(R.id.btn_keyboard).setOnClickListener { showVirtualKeyboard() }
+        // BUILD PERMANENT KEYBOARD
+        buildPermanentKeyboard()
     }
 
-    private fun showVirtualKeyboard() {
-        val dialog = BottomSheetDialog(this)
-        val scrollView = ScrollView(this)
-        val mainLayout = LinearLayout(this)
-        mainLayout.orientation = LinearLayout.VERTICAL
-        mainLayout.setPadding(10, 10, 10, 10)
-        mainLayout.setBackgroundColor(Color.parseColor("#121212"))
-
+    private fun buildPermanentKeyboard() {
+        val container = findViewById<LinearLayout>(R.id.keyboard_container)
+        val numpadContainer = findViewById<LinearLayout>(R.id.numpad_container)
+        
+        // Main QWERTY Rows
         val keys = listOf(
             listOf("Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"),
-            listOf("~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace"),
+            listOf("~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Back"),
             listOf("Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"),
             listOf("Caps", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "Enter"),
-            listOf("Shift", "Z", "X", "C (Cut)", "V", "B", "N", "M", ",", ".", "/", "Shift"),
-            listOf("Ctrl", "Win", "Alt", "Space (Play/Pause)", "Alt", "Ctrl", "◄", "▼", "▲", "►")
+            listOf("Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "Shift"),
+            listOf("Ctrl", "Win", "Alt", "Space", "Alt", "Fn", "Ctrl")
         )
 
         for (row in keys) {
             val rowLayout = LinearLayout(this)
             rowLayout.orientation = LinearLayout.HORIZONTAL
-            rowLayout.gravity = Gravity.CENTER
+            val rowParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f)
+            rowLayout.layoutParams = rowParams
             
             for (key in row) {
-                val btn = Button(this)
+                val btn = TextView(this)
                 btn.text = key
-                btn.textSize = 10f
-                btn.setPadding(5,5,5,5)
+                btn.textSize = 6f // Very small to fit
+                btn.setTextColor(Color.WHITE)
+                btn.setBackgroundColor(Color.parseColor("#333333"))
+                btn.gravity = Gravity.CENTER
+                
+                val paramWeight = if (key == "Space") 5f else if (key == "Enter" || key == "Shift") 2f else 1f
+                val params = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, paramWeight)
+                params.setMargins(1, 1, 1, 1)
+                btn.layoutParams = params
                 
                 btn.setOnClickListener {
-                    when (key) {
-                        "C (Cut)" -> Toast.makeText(this, "Cut Applied at Timeline!", Toast.LENGTH_LONG).show() // Emoji Hata Diya
-                        "Space (Play/Pause)" -> {
-                            if (videoPreview.isPlaying) videoPreview.pause() else videoPreview.start()
-                        }
-                        else -> Toast.makeText(this, "Key: $key", Toast.LENGTH_SHORT).show()
-                    }
+                    if (key == "C") Toast.makeText(this, "Cut Action!", Toast.LENGTH_SHORT).show()
+                    if (key == "Space") { if (videoPreview.isPlaying) videoPreview.pause() else videoPreview.start() }
                 }
-                
-                val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                params.setMargins(2, 2, 2, 2)
-                rowLayout.addView(btn, params)
+                rowLayout.addView(btn)
             }
-            mainLayout.addView(rowLayout)
+            container.addView(rowLayout)
         }
 
-        val hScroll = HorizontalScrollView(this)
-        hScroll.addView(mainLayout)
-        scrollView.addView(hScroll)
-        
-        dialog.setContentView(scrollView)
-        dialog.show()
+        // Numpad Rows
+        val numKeys = listOf(
+            listOf("Num", "/", "*", "-"),
+            listOf("7", "8", "9", "+"),
+            listOf("4", "5", "6", ""),
+            listOf("1", "2", "3", "Ent"),
+            listOf("0", ".", "", "")
+        )
+        for (row in numKeys) {
+            val rowLayout = LinearLayout(this)
+            rowLayout.orientation = LinearLayout.HORIZONTAL
+            val rowParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f)
+            rowLayout.layoutParams = rowParams
+            
+            for (key in row) {
+                if(key == "") continue
+                val btn = TextView(this)
+                btn.text = key
+                btn.textSize = 6f
+                btn.setTextColor(Color.WHITE)
+                btn.setBackgroundColor(Color.parseColor("#333333"))
+                btn.gravity = Gravity.CENTER
+                
+                val paramWeight = if (key == "0") 2f else 1f
+                val params = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, paramWeight)
+                params.setMargins(1, 1, 1, 1)
+                btn.layoutParams = params
+                rowLayout.addView(btn)
+            }
+            numpadContainer.addView(rowLayout)
+        }
     }
 }
